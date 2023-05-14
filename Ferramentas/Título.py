@@ -1,4 +1,4 @@
-def Título(txt, c, m=0):
+def Título(txt, c="=", m=0):
 	if m == 0:
 		tam = len(txt) + 4
 		print(f"\n{c*tam}")

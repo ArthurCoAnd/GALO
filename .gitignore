@@ -1,3 +1,7 @@
+BDD/REG_ATL.csv
+
 *.csv
 *.ipynb
 *.pyc
+*.png
+*.pdf
