@@ -513,7 +513,7 @@ class GALO():
 			for anl in (anlbar := tqdm(["Dados","Total","Anual",f"Mês"], leave=False, position=3)):
 				anlbar.set_description(f"{anl}")
 				if anl == "Dados":
-					PDF.pg_FD("E",f"{ei}",f"Dados - Total",E_dados,f"Dados - {self.mês_txt} de {self.ano}",E_dados_mês)
+					PDF.pg_FD("E",f"{ei_nome}",f"Dados - Total",E_dados,f"Dados - {self.mês_txt} de {self.ano}",E_dados_mês)
 				elif anl == "Total":
 					P = f"ANÁLISES/ESTADOS/{ei}/{self.ano} - {self.mês} [Total Municipal].png"
 					if not os.path.isfile(P) or RG:
