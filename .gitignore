@@ -1,8 +1,7 @@
-BDD/REG_ATL.csv
-BDD/ATLETICANOS.csv
-
 *.csv
 *.ipynb
+*.json
 *.pdf
 *.png
 *.pyc
+*.txt
