@@ -12,22 +12,29 @@
 #  ╚═════╝ ╚═╝  ╚═╝╚══════╝ ╚═════╝ 
 # Gerador de Análises Livre e Open-source
 
+import os, sys
+parent = os.path.abspath('.')
+sys.path.insert(1, parent)
+
 # Bibliotecas
-import os
+from gsheets import Sheets
+import json
 
-# Módulos
-from Módulos.ARENA_MRV import ARENA_MRV
-from Módulos.CIDADE_DO_GALO import CIDADE_DO_GALO
-from Módulos.GALO_NA_VEIA import GALO_NA_VEIA
-from Módulos.SEDE_DE_LOURDES import SEDE_DE_LOURDES
-from Módulos.ITATIAIA import ITATIAIA
+# Ferramentas
+from Ferramentas.Título import Título
 
-def GALO():
-	SEDE_DE_LOURDES()
-	GALO_NA_VEIA()
-	CIDADE_DO_GALO()
-	ARENA_MRV()
-	ITATIAIA()
+def GALO_NA_VEIA():
+	Título("GALO NA VEIA")
+
+	with open("BDD/CFG.json") as f:
+		CFG = json.load(f)
+
+	planilha = f"https://docs.google.com/spreadsheets/d/{CFG['planilha_id']}"
+
+	sheets = Sheets.from_files("GALO.json")
+	sheet = sheets.get(planilha)
+	ATLETICANOS = sheet[1651774562].to_frame()
+	ATLETICANOS.to_csv("BDD/ATLETICANOS.csv",sep=";")
 
 if __name__ == "__main__":
 	os.system('cls' if os.name == 'nt' else 'clear')
@@ -38,4 +45,4 @@ if __name__ == "__main__":
 	print("╚██████╔╝██║  ██║███████╗╚██████╔╝")
 	print(" ╚═════╝ ╚═╝  ╚═╝╚══════╝ ╚═════╝ ")
 	print("Gerador de Análises Livre e Open-source")
-	GALO()
+	GALO_NA_VEIA()
