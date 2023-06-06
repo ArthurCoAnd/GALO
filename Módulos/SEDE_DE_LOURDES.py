@@ -13,7 +13,7 @@
 # Gerador de Análises Livre e Open-source
 
 import os, sys
-parent = os.path.abspath('.')
+parent = os.path.abspath(".")
 sys.path.insert(1, parent)
 
 # Bibliotecas
@@ -63,7 +63,7 @@ def SEDE_DE_LOURDES():
 					print(f"Download: {url_ATL}")
 					wget.download(url_ATL, f"BDD/ELENCO/{dt_ANEEL}.csv")
 
-					# Tratamento dos novos dados - Substituir ',' por '.'
+					# Tratamento dos novos dados - Substituir "," por "."
 					try:
 						arq = open(f"BDD/ELENCO/{dt_ANEEL}.csv","rt")
 						dados = arq.read()
@@ -108,7 +108,7 @@ def SEDE_DE_LOURDES():
 		Título("ERRO - FALHA NA OBTENÇÃO DOS DADOS DA ANEEL","*",1)
 
 if __name__ == "__main__":
-	os.system('cls' if os.name == 'nt' else 'clear')
+	os.system("cls" if os.name == "nt" else "clear")
 	print(" ██████╗  █████╗ ██╗      ██████╗ ")
 	print("██╔════╝ ██╔══██╗██║     ██╔═══██╗")
 	print("██║  ███╗███████║██║     ██║   ██║")

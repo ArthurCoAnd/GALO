@@ -13,7 +13,7 @@
 # Gerador de Análises Livre e Open-source
 
 import os, sys
-parent = os.path.abspath('.')
+parent = os.path.abspath(".")
 sys.path.insert(1, parent)
 
 # Bibliotecas
@@ -213,15 +213,15 @@ class ARENA_MRV():
 		self.filtro_txt = ["Empreendimentos","Unidades Consumidoras","Potência Instalada [W]","Geração Estimada [kWh.ano]"]
 
 		for i in (ibar := tqdm(self.ATLETICANOS.index, leave=False, position=0)):
-			nome = self.ATLETICANOS['Nome'][i]
+			nome = self.ATLETICANOS["Nome"][i]
 			ibar.set_description(f"{nome}")
 
-			Brasil = self.ATLETICANOS['Brasil'][i]
-			try:	agentes = self.ATLETICANOS['Agente'][i].split(',') # SigAgente
+			Brasil = self.ATLETICANOS["Brasil"][i]
+			try:	agentes = self.ATLETICANOS["Agentes"][i].split(",") # SigAgente
 			except: agentes = []
-			try:	estados = self.ATLETICANOS['Estado'][i].split(',') # SigUF
+			try:	estados = self.ATLETICANOS["Estados"][i].split(",") # SigUF
 			except: estados = []
-			try:	municípios = self.ATLETICANOS['Município'][i].split(',') # CodMunicipioIbge
+			try:	municípios = self.ATLETICANOS["Municípios"][i].split(",") # CodMunicipioIbge
 			except: municípios = []
 
 			P_PDF = f"BDD/RELATÓRIOS/GALO - {nome} - {self.ano} - {self.mês}.pdf"
@@ -376,7 +376,7 @@ class ARENA_MRV():
 							PDF.pg_TG(f"{mi_nome} - Ano-a-Ano [{AA}]",P)
 
 if __name__ == "__main__":
-	os.system('cls' if os.name == 'nt' else 'clear')
+	os.system("cls" if os.name == "nt" else "clear")
 	print(" ██████╗  █████╗ ██╗      ██████╗ ")
 	print("██╔════╝ ██╔══██╗██║     ██╔═══██╗")
 	print("██║  ███╗███████║██║     ██║   ██║")

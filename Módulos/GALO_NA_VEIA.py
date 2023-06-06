@@ -13,7 +13,7 @@
 # Gerador de Análises Livre e Open-source
 
 import os, sys
-parent = os.path.abspath('.')
+parent = os.path.abspath(".")
 sys.path.insert(1, parent)
 
 # Bibliotecas
@@ -37,7 +37,7 @@ def GALO_NA_VEIA():
 	ATLETICANOS.to_csv("BDD/ATLETICANOS.csv",sep=";")
 
 if __name__ == "__main__":
-	os.system('cls' if os.name == 'nt' else 'clear')
+	os.system("cls" if os.name == "nt" else "clear")
 	print(" ██████╗  █████╗ ██╗      ██████╗ ")
 	print("██╔════╝ ██╔══██╗██║     ██╔═══██╗")
 	print("██║  ███╗███████║██║     ██║   ██║")
