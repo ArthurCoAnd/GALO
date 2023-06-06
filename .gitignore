@@ -3,7 +3,7 @@ BDD/BID_CBF.csv
 BDD/CFG.json
 BDD/GALO.json
 
-
+*.csv
 *.ipynb
 *.json
 *.pdf
