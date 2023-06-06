@@ -355,19 +355,19 @@ class CIDADE_DO_GALO():
 
 		age = []
 		for x in self.ATLETICANOS["Agentes"].unique().tolist():
-			try: age.extend(x.split(","))
+			try: age.extend(x.split(", "))
 			except: pass
 		age = list(set(age)); age.sort()	
 		
 		est = []
 		for x in self.ATLETICANOS["Estados"].unique().tolist():
-			try: est.extend(x.split(","))
+			try: est.extend(x.split(", "))
 			except: pass
 		est = list(set(est)); est.sort()
 
 		mun = []
 		for x in self.ATLETICANOS["Municípios"].unique().tolist():
-			try: mun.extend(x.split(","))
+			try: mun.extend(x.split(", "))
 			except: pass
 		mun = list(set(mun)); mun.sort()
 

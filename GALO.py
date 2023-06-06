@@ -23,11 +23,16 @@ from Módulos.SEDE_DE_LOURDES import SEDE_DE_LOURDES
 from Módulos.ITATIAIA import ITATIAIA
 
 def GALO():
-	SEDE_DE_LOURDES()
-	GALO_NA_VEIA()
-	CIDADE_DO_GALO()
-	ARENA_MRV()
-	ITATIAIA()
+	try: SEDE_DE_LOURDES()
+	except: pass
+	try: GALO_NA_VEIA()
+	except: pass
+	try: CIDADE_DO_GALO()
+	except: pass
+	try: ARENA_MRV()
+	except: pass
+	try: ITATIAIA()
+	except: pass
 
 if __name__ == "__main__":
 	os.system("cls" if os.name == "nt" else "clear")

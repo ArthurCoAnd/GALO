@@ -34,7 +34,8 @@ def GALO_NA_VEIA():
 	sheets = Sheets.from_files("GALO.json")
 	sheet = sheets.get(planilha)
 	ATLETICANOS = sheet[1651774562].to_frame()
-	ATLETICANOS.to_csv("BDD/ATLETICANOS.csv",sep=";")
+	ATLETICANOS = ATLETICANOS.sort_values(by="Nome")
+	ATLETICANOS.to_csv("BDD/ATLETICANOS.csv", sep=";", index=False)
 
 if __name__ == "__main__":
 	os.system("cls" if os.name == "nt" else "clear")

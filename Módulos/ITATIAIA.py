@@ -18,18 +18,16 @@ sys.path.insert(1, parent)
 
 # Bibliotecas
 from dateutil.relativedelta import relativedelta
+from email import encoders
+from email.mime.base import MIMEBase
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 from tqdm import tqdm
 import datetime as DT
 import json
 import pandas as PD
-
-import smtplib, ssl
-from email.message import EmailMessage
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
-from email.mime.image import MIMEImage
-from email.mime.base import MIMEBase
-from email import encoders
+import smtplib
+import ssl
 
 # Ferramentas
 from Ferramentas.Mês import Mês
@@ -43,7 +41,9 @@ def ITATIAIA():
 	Título("ITATIAIA")
 	
 	ATLETICANOS = PD.read_csv("BDD/ATLETICANOS.csv",sep=";")
-	ATLETICANOS = PD.read_csv("BDD/ATLETICANOS-TESTE.csv",sep=";")
+	# ATLETICANOS = PD.read_csv("BDD/ATLETICANOS-TESTE.csv",sep=";")
+
+	OUVINTES = PD.read_csv("BDD/OUVINTES.csv",sep=";")
 
 	BID_CBF = PD.read_csv("BDD/BID_CBF.csv",sep=";")
 	dt_BDD = BID_CBF["dt_ANEEL"][0]
@@ -58,6 +58,7 @@ def ITATIAIA():
 	mês = Data_lim.month
 	mês_txt = Mês(mês)
 	ano = Data_lim.year
+	AM = f"{ano}-{mês}"
 
 	with open("BDD/CFG.json") as f:
 		CFG = json.load(f)
@@ -72,32 +73,53 @@ def ITATIAIA():
 	context = ssl.create_default_context()
 	with smtplib.SMTP_SSL(eGALO_smtp_server, eGALO_port, context=context) as server:
 		server.login(eGALO, eGALO_senha)
-
 		for i in (ibar := tqdm(ATLETICANOS.index, leave=False, position=0)):
+
+			enviar = True
+
 			ATL_nome = ATLETICANOS["Nome"][i]
 			ATL_email = ATLETICANOS["Endereço de e-mail"][i]
 			ibar.set_description(f"{ATL_nome}")
 
-			eGALO_msg = MIMEMultipart("alternative")
-			eGALO_msg["Subject"] = eGALO_assunto
-			eGALO_msg["From"] = eGALO
-			eGALO_msg["To"] = ATL_email
+			O_email = OUVINTES["email"].to_list()
+			O_AMUER = OUVINTES["AMUER"].to_list() # Ano Mês do Último Envio de Relatório
 
-			html = str(open("Complementos/GALO.html", "r", encoding="utf-8").read())
-			html = html.replace("*nome*",ATL_nome)
-			html = html.replace("*mês*",mês_txt)
-			html = html.replace("*ano*",str(ano))
-			htmlMT = MIMEText(html, "html", "utf-8")
-			eGALO_msg.attach(htmlMT)
+			if ATL_email in set(O_email):
+				idx = O_email.index(ATL_email)
+				if O_AMUER[idx] == AM:
+					enviar = False
+				else:
+					O_AMUER[idx] = AM
+					OUVINTES["AMUER"] = O_AMUER
+			else:
+				O = PD.DataFrame([[ATL_nome,ATL_email,AM]],columns=["Nome","email","AMUER"])
+				OUVINTES = PD.concat([OUVINTES,O])
+			
+			OUVINTES = OUVINTES.sort_values(by="Nome")
+			OUVINTES.to_csv("BDD/OUVINTES.csv", sep=";", index=False)
 
-			pPDF = f"BDD/RELATÓRIOS/GALO - {ATL_nome} - {ano} - {mês}.pdf"
-			PDF = MIMEBase("application", "octate-stream", Name=pPDF)
-			PDF.set_payload((open(pPDF, "rb")).read())
-			encoders.encode_base64(PDF)
-			PDF.add_header("Content-Decomposition", "attachment", filename=pPDF.replace("BDD/RELATÓRIOS/","").replace(".pdf",""))
-			eGALO_msg.attach(PDF)
+			if enviar:
+				eGALO_msg = MIMEMultipart("alternative")
+				eGALO_msg["Subject"] = eGALO_assunto
+				eGALO_msg["From"] = eGALO
+				eGALO_msg["To"] = ATL_email
 
-			server.send_message(eGALO_msg, from_addr=eGALO, to_addrs=ATL_email)
+				html = str(open("Complementos/GALO.html", "r", encoding="utf-8").read())
+				html = html.replace("*nome*",ATL_nome)
+				html = html.replace("*mês*",mês_txt)
+				html = html.replace("*ano*",str(ano))
+				htmlMT = MIMEText(html, "html", "utf-8")
+				eGALO_msg.attach(htmlMT)
+
+				pPDF = f"BDD/RELATÓRIOS/GALO - {ATL_nome} - {ano} - {mês}.pdf"
+				nPDF = pPDF.replace("BDD/RELATÓRIOS/","")
+				PDF = MIMEBase("application", "octate-stream", Name=nPDF)
+				PDF.set_payload((open(pPDF, "rb")).read())
+				encoders.encode_base64(PDF)
+				PDF.add_header("Content-Decomposition", "attachment", filename=nPDF)
+				eGALO_msg.attach(PDF)
+
+				server.send_message(eGALO_msg, from_addr=eGALO, to_addrs=ATL_email)
 
 if __name__ == "__main__":
 	os.system("cls" if os.name == "nt" else "clear")

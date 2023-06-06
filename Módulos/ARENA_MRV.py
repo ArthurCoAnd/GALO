@@ -217,11 +217,11 @@ class ARENA_MRV():
 			ibar.set_description(f"{nome}")
 
 			Brasil = self.ATLETICANOS["Brasil"][i]
-			try:	agentes = self.ATLETICANOS["Agentes"][i].split(",") # SigAgente
+			try:	agentes = self.ATLETICANOS["Agentes"][i].split(", ") # SigAgente
 			except: agentes = []
-			try:	estados = self.ATLETICANOS["Estados"][i].split(",") # SigUF
+			try:	estados = self.ATLETICANOS["Estados"][i].split(", ") # SigUF
 			except: estados = []
-			try:	municípios = self.ATLETICANOS["Municípios"][i].split(",") # CodMunicipioIbge
+			try:	municípios = self.ATLETICANOS["Municípios"][i].split(", ") # CodMunicipioIbge
 			except: municípios = []
 
 			P_PDF = f"BDD/RELATÓRIOS/GALO - {nome} - {self.ano} - {self.mês}.pdf"
