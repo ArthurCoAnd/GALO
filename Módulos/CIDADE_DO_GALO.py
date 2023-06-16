@@ -367,7 +367,7 @@ class CIDADE_DO_GALO():
 
 		mun = []
 		for x in self.ATLETICANOS["Municípios"].unique().tolist():
-			try: mun.extend(x.split(", "))
+			try: mun.extend(x.replace('"','').split(", "))
 			except: pass
 		mun = list(set(mun)); mun.sort()
 
@@ -444,52 +444,55 @@ class CIDADE_DO_GALO():
 		for ai in (abar := tqdm(agentes, leave=False, position=1)):
 			try: A = self.DADOS.loc[self.DADOS["SigAgente"] == ai]
 			except: continue
-			abar.set_description(f"{ai}")
+			if len(A) == 0:
+				continue
+			else:
+				abar.set_description(f"{ai}")
 
-			if not os.path.exists(f"BDD/ANÁLISES/AGENTES/{ai}"):
-				os.makedirs(f"BDD/ANÁLISES/AGENTES/{ai}")
+				if not os.path.exists(f"BDD/ANÁLISES/AGENTES/{ai}"):
+					os.makedirs(f"BDD/ANÁLISES/AGENTES/{ai}")
 
-			if not os.path.exists(f"BDD/GRÁFICOS/AGENTES/{ai}"):
-				os.makedirs(f"BDD/GRÁFICOS/AGENTES/{ai}")
+				if not os.path.exists(f"BDD/GRÁFICOS/AGENTES/{ai}"):
+					os.makedirs(f"BDD/GRÁFICOS/AGENTES/{ai}")
 
-			for anl in (anlbar := tqdm(["Dados","Total","Mês","Mês-a-Mês","Ano-a-Ano"], leave=False, position=2)):
-				anlbar.set_description(f"{anl}")
-				if anl == "Dados":
-					P = f"BDD/ANÁLISES/AGENTES/{ai}/{self.ano} - {self.mês} [TOTAL].json"
-					if not os.path.isfile(P) or RG:
-						self.gerar_dados(A,"B",P)
-					P = f"BDD/ANÁLISES/AGENTES/{ai}/{self.ano} - {self.mês} [MÊS].json"
-					if not os.path.isfile(P) or RG:
-						A_MÊS = A.loc[A["Ano-Mês"] == f"{self.ano}-{self.mês}"]
-						self.gerar_dados(A_MÊS,"B",P)
-				elif anl == "Total":
-					P = f"BDD/GRÁFICOS/AGENTES/{ai}/{self.ano} - {self.mês} [Total Mun].png"
-					if not os.path.isfile(P) or RG:
-						A_MUN = self.CALC_DADOS_MUNICÍPIOS(A)
-						self.GFG_Básico(A_MUN,"Mun",P)
-				elif anl == "Mês":
-					P = f"BDD/GRÁFICOS/AGENTES/{ai}/{self.ano} - {self.mês} [Mês Mun].png"
-					if not os.path.isfile(P) or RG:
-						A_MÊS = A.loc[A["Ano-Mês"] == f"{self.ano}-{self.mês}"]
-						A_MÊS_MUN = self.CALC_DADOS_MUNICÍPIOS(A_MÊS)
-						if len(A_MÊS_MUN) != 0:
-							self.GFG_Básico(A_MÊS_MUN,"Mun",P)
-				elif anl == "Mês-a-Mês":
-					for MM in (MMbar := tqdm(self.filtros, leave=False, position=3)):
-						MMbar.set_description(f"{MM}")
-						idx = self.filtros.index(MM)
-						P = f"BDD/GRÁFICOS/AGENTES/{ai}/{self.ano} - {self.mês} [Mês-a-Mês {MM}].png"
+				for anl in (anlbar := tqdm(["Dados","Total","Mês","Mês-a-Mês","Ano-a-Ano"], leave=False, position=2)):
+					anlbar.set_description(f"{anl}")
+					if anl == "Dados":
+						P = f"BDD/ANÁLISES/AGENTES/{ai}/{self.ano} - {self.mês} [TOTAL].json"
 						if not os.path.isfile(P) or RG:
-							A_MaM = self.CALC_MES_MES(A)
-							self.GFG_MM_Filtro(A_MaM,P,MM,self.filtros_txt[idx],3,13)
-				elif anl == "Ano-a-Ano":
-					for AA in (AAbar := tqdm(self.filtros, leave=False, position=3)):
-						AAbar.set_description(f"{AA}")
-						idx = self.filtros.index(AA)
-						P = f"BDD/GRÁFICOS/AGENTES/{ai}/{self.ano} - {self.mês} [Ano-a-Ano {AA}].png"
+							self.gerar_dados(A,"A",P)
+						P = f"BDD/ANÁLISES/AGENTES/{ai}/{self.ano} - {self.mês} [MÊS].json"
 						if not os.path.isfile(P) or RG:
-							A_AaA = self.CALC_ANO_ANO(A)
-							self.GFG_AA_Filtro(A_AaA,P,AA,self.filtros_txt[idx],3,13)
+							A_MÊS = A.loc[A["Ano-Mês"] == f"{self.ano}-{self.mês}"]
+							self.gerar_dados(A_MÊS,"A",P)
+					elif anl == "Total":
+						P = f"BDD/GRÁFICOS/AGENTES/{ai}/{self.ano} - {self.mês} [Total Mun].png"
+						if not os.path.isfile(P) or RG:
+							A_MUN = self.CALC_DADOS_MUNICÍPIOS(A)
+							self.GFG_Básico(A_MUN,"Mun",P)
+					elif anl == "Mês":
+						P = f"BDD/GRÁFICOS/AGENTES/{ai}/{self.ano} - {self.mês} [Mês Mun].png"
+						if not os.path.isfile(P) or RG:
+							A_MÊS = A.loc[A["Ano-Mês"] == f"{self.ano}-{self.mês}"]
+							A_MÊS_MUN = self.CALC_DADOS_MUNICÍPIOS(A_MÊS)
+							if len(A_MÊS_MUN) != 0:
+								self.GFG_Básico(A_MÊS_MUN,"Mun",P)
+					elif anl == "Mês-a-Mês":
+						for MM in (MMbar := tqdm(self.filtros, leave=False, position=3)):
+							MMbar.set_description(f"{MM}")
+							idx = self.filtros.index(MM)
+							P = f"BDD/GRÁFICOS/AGENTES/{ai}/{self.ano} - {self.mês} [Mês-a-Mês {MM}].png"
+							if not os.path.isfile(P) or RG:
+								A_MaM = self.CALC_MES_MES(A)
+								self.GFG_MM_Filtro(A_MaM,P,MM,self.filtros_txt[idx],3,13)
+					elif anl == "Ano-a-Ano":
+						for AA in (AAbar := tqdm(self.filtros, leave=False, position=3)):
+							AAbar.set_description(f"{AA}")
+							idx = self.filtros.index(AA)
+							P = f"BDD/GRÁFICOS/AGENTES/{ai}/{self.ano} - {self.mês} [Ano-a-Ano {AA}].png"
+							if not os.path.isfile(P) or RG:
+								A_AaA = self.CALC_ANO_ANO(A)
+								self.GFG_AA_Filtro(A_AaA,P,AA,self.filtros_txt[idx],3,13)
 
 	###########
 	# ESTADOS #
@@ -498,52 +501,55 @@ class CIDADE_DO_GALO():
 		for ei in (ebar := tqdm(estados, leave=False, position=1)):
 			try: E = self.DADOS.loc[self.DADOS["SigUF"] == ei]
 			except: continue
-			ebar.set_description(f"{ei}")
+			if len(E) == 0:
+				continue
+			else:
+				ebar.set_description(f"{ei}")
 
-			if not os.path.exists(f"BDD/ANÁLISES/ESTADOS/{ei}"):
-				os.makedirs(f"BDD/ANÁLISES/ESTADOS/{ei}")
+				if not os.path.exists(f"BDD/ANÁLISES/ESTADOS/{ei}"):
+					os.makedirs(f"BDD/ANÁLISES/ESTADOS/{ei}")
 
-			if not os.path.exists(f"BDD/GRÁFICOS/ESTADOS/{ei}"):
-				os.makedirs(f"BDD/GRÁFICOS/ESTADOS/{ei}")
+				if not os.path.exists(f"BDD/GRÁFICOS/ESTADOS/{ei}"):
+					os.makedirs(f"BDD/GRÁFICOS/ESTADOS/{ei}")
 
-			for anl in (anlbar := tqdm(["Dados","Total","Mês","Mês-a-Mês","Ano-a-Ano"], leave=False, position=2)):
-				anlbar.set_description(f"{anl}")
-				if anl == "Dados":
-					P = f"BDD/ANÁLISES/ESTADOS/{ei}/{self.ano} - {self.mês} [TOTAL].json"
-					if not os.path.isfile(P) or RG:
-						self.gerar_dados(E,"B",P)
-					P = f"BDD/ANÁLISES/ESTADOS/{ei}/{self.ano} - {self.mês} [MÊS].json"
-					if not os.path.isfile(P) or RG:
-						E_MÊS = E.loc[E["Ano-Mês"] == f"{self.ano}-{self.mês}"]
-						self.gerar_dados(E_MÊS,"B",P)
-				elif anl == "Total":
-					P = f"BDD/GRÁFICOS/ESTADOS/{ei}/{self.ano} - {self.mês} [Total Mun].png"
-					if not os.path.isfile(P) or RG:
-						E_MUN = self.CALC_DADOS_MUNICÍPIOS(E)
-						self.GFG_Básico(E_MUN,"Mun",P)
-				elif anl == "Mês":
-					P = f"BDD/GRÁFICOS/ESTADOS/{ei}/{self.ano} - {self.mês} [Mês Mun].png"
-					if not os.path.isfile(P) or RG:
-						E_MÊS = E.loc[E["Ano-Mês"] == f"{self.ano}-{self.mês}"]
-						E_MÊS_MUN = self.CALC_DADOS_MUNICÍPIOS(E_MÊS)
-						if len(E_MÊS_MUN) != 0:
-							self.GFG_Básico(E_MÊS_MUN,"Mun",P)
-				elif anl == "Mês-a-Mês":
-					for MM in (MMbar := tqdm(self.filtros, leave=False, position=3)):
-						MMbar.set_description(f"{MM}")
-						idx = self.filtros.index(MM)
-						P = f"BDD/GRÁFICOS/ESTADOS/{ei}/{self.ano} - {self.mês} [Mês-a-Mês {MM}].png"
+				for anl in (anlbar := tqdm(["Dados","Total","Mês","Mês-a-Mês","Ano-a-Ano"], leave=False, position=2)):
+					anlbar.set_description(f"{anl}")
+					if anl == "Dados":
+						P = f"BDD/ANÁLISES/ESTADOS/{ei}/{self.ano} - {self.mês} [TOTAL].json"
 						if not os.path.isfile(P) or RG:
-							E_MaM = self.CALC_MES_MES(E)
-							self.GFG_MM_Filtro(E_MaM,P,MM,self.filtros_txt[idx],3,13)
-				elif anl == "Ano-a-Ano":
-					for AA in (AAbar := tqdm(self.filtros, leave=False, position=3)):
-						AAbar.set_description(f"{AA}")
-						idx = self.filtros.index(AA)
-						P = f"BDD/GRÁFICOS/ESTADOS/{ei}/{self.ano} - {self.mês} [Ano-a-Ano {AA}].png"
+							self.gerar_dados(E,"E",P)
+						P = f"BDD/ANÁLISES/ESTADOS/{ei}/{self.ano} - {self.mês} [MÊS].json"
 						if not os.path.isfile(P) or RG:
-							E_AaA = self.CALC_ANO_ANO(E)
-							self.GFG_AA_Filtro(E_AaA,P,AA,self.filtros_txt[idx],3,13)
+							E_MÊS = E.loc[E["Ano-Mês"] == f"{self.ano}-{self.mês}"]
+							self.gerar_dados(E_MÊS,"E",P)
+					elif anl == "Total":
+						P = f"BDD/GRÁFICOS/ESTADOS/{ei}/{self.ano} - {self.mês} [Total Mun].png"
+						if not os.path.isfile(P) or RG:
+							E_MUN = self.CALC_DADOS_MUNICÍPIOS(E)
+							self.GFG_Básico(E_MUN,"Mun",P)
+					elif anl == "Mês":
+						P = f"BDD/GRÁFICOS/ESTADOS/{ei}/{self.ano} - {self.mês} [Mês Mun].png"
+						if not os.path.isfile(P) or RG:
+							E_MÊS = E.loc[E["Ano-Mês"] == f"{self.ano}-{self.mês}"]
+							E_MÊS_MUN = self.CALC_DADOS_MUNICÍPIOS(E_MÊS)
+							if len(E_MÊS_MUN) != 0:
+								self.GFG_Básico(E_MÊS_MUN,"Mun",P)
+					elif anl == "Mês-a-Mês":
+						for MM in (MMbar := tqdm(self.filtros, leave=False, position=3)):
+							MMbar.set_description(f"{MM}")
+							idx = self.filtros.index(MM)
+							P = f"BDD/GRÁFICOS/ESTADOS/{ei}/{self.ano} - {self.mês} [Mês-a-Mês {MM}].png"
+							if not os.path.isfile(P) or RG:
+								E_MaM = self.CALC_MES_MES(E)
+								self.GFG_MM_Filtro(E_MaM,P,MM,self.filtros_txt[idx],3,13)
+					elif anl == "Ano-a-Ano":
+						for AA in (AAbar := tqdm(self.filtros, leave=False, position=3)):
+							AAbar.set_description(f"{AA}")
+							idx = self.filtros.index(AA)
+							P = f"BDD/GRÁFICOS/ESTADOS/{ei}/{self.ano} - {self.mês} [Ano-a-Ano {AA}].png"
+							if not os.path.isfile(P) or RG:
+								E_AaA = self.CALC_ANO_ANO(E)
+								self.GFG_AA_Filtro(E_AaA,P,AA,self.filtros_txt[idx],3,13)
 
 	##############
 	# MUNICÍPIOS #
@@ -552,42 +558,45 @@ class CIDADE_DO_GALO():
 		for mi in (mbar := tqdm(municípios, leave=False, position=1)):
 			try: M = self.DADOS.loc[self.DADOS["CodMunicipioIbge"] == int(mi)]
 			except: continue
-			mi_nome = M["NomMunicipio"][M.index[0]]
-			mi_uf = M["SigUF"][M.index[0]]
-			mbar.set_description(f"{mi_nome} [{mi_uf}]")
+			if len(M) == 0:
+				continue
+			else:
+				mi_nome = M["NomMunicipio"][M.index[0]]
+				mi_uf = M["SigUF"][M.index[0]]
+				mbar.set_description(f"{mi_nome} [{mi_uf}]")
 
-			if not os.path.exists(f"BDD/ANÁLISES/MUNICÍPIOS/{mi}"):
-				os.makedirs(f"BDD/ANÁLISES/MUNICÍPIOS/{mi}")
+				if not os.path.exists(f"BDD/ANÁLISES/MUNICÍPIOS/{mi}"):
+					os.makedirs(f"BDD/ANÁLISES/MUNICÍPIOS/{mi}")
 
-			if not os.path.exists(f"BDD/GRÁFICOS/MUNICÍPIOS/{mi}"):
-				os.makedirs(f"BDD/GRÁFICOS/MUNICÍPIOS/{mi}")
+				if not os.path.exists(f"BDD/GRÁFICOS/MUNICÍPIOS/{mi}"):
+					os.makedirs(f"BDD/GRÁFICOS/MUNICÍPIOS/{mi}")
 
-			for anl in (anlbar := tqdm(["Dados","Total","Mês","Mês-a-Mês","Ano-a-Ano"], leave=False, position=2)):
-				anlbar.set_description(f"{anl}")
-				if anl == "Dados":
-					P = f"BDD/ANÁLISES/MUNICÍPIOS/{mi}/{self.ano} - {self.mês} [TOTAL].json"
-					if not os.path.isfile(P) or RG:
-						self.gerar_dados(M,"B",P)
-					P = f"BDD/ANÁLISES/MUNICÍPIOS/{mi}/{self.ano} - {self.mês} [MÊS].json"
-					if not os.path.isfile(P) or RG:
-						M_MÊS = M.loc[M["Ano-Mês"] == f"{self.ano}-{self.mês}"]
-						self.gerar_dados(M_MÊS,"B",P)
-				elif anl == "Mês-a-Mês":
-					for MM in (MMbar := tqdm(self.filtros, leave=False, position=3)):
-						MMbar.set_description(f"{MM}")
-						idx = self.filtros.index(MM)
-						P = f"BDD/GRÁFICOS/MUNICÍPIOS/{mi}/{self.ano} - {self.mês} [Mês-a-Mês {MM}].png"
+				for anl in (anlbar := tqdm(["Dados","Total","Mês","Mês-a-Mês","Ano-a-Ano"], leave=False, position=2)):
+					anlbar.set_description(f"{anl}")
+					if anl == "Dados":
+						P = f"BDD/ANÁLISES/MUNICÍPIOS/{mi}/{self.ano} - {self.mês} [TOTAL].json"
 						if not os.path.isfile(P) or RG:
-							M_MaM = self.CALC_MES_MES(M)
-							self.GFG_MM_Filtro(M_MaM,P,MM,self.filtros_txt[idx],3,13)
-				elif anl == "Ano-a-Ano":
-					for AA in (AAbar := tqdm(self.filtros, leave=False, position=3)):
-						AAbar.set_description(f"{AA}")
-						idx = self.filtros.index(AA)
-						P = f"BDD/GRÁFICOS/MUNICÍPIOS/{mi}/{self.ano} - {self.mês} [Ano-a-Ano {AA}].png"
+							self.gerar_dados(M,"M",P)
+						P = f"BDD/ANÁLISES/MUNICÍPIOS/{mi}/{self.ano} - {self.mês} [MÊS].json"
 						if not os.path.isfile(P) or RG:
-							M_AaA = self.CALC_ANO_ANO(M)
-							self.GFG_AA_Filtro(M_AaA,P,AA,self.filtros_txt[idx],3,13)
+							M_MÊS = M.loc[M["Ano-Mês"] == f"{self.ano}-{self.mês}"]
+							self.gerar_dados(M_MÊS,"M",P)
+					elif anl == "Mês-a-Mês":
+						for MM in (MMbar := tqdm(self.filtros, leave=False, position=3)):
+							MMbar.set_description(f"{MM}")
+							idx = self.filtros.index(MM)
+							P = f"BDD/GRÁFICOS/MUNICÍPIOS/{mi}/{self.ano} - {self.mês} [Mês-a-Mês {MM}].png"
+							if not os.path.isfile(P) or RG:
+								M_MaM = self.CALC_MES_MES(M)
+								self.GFG_MM_Filtro(M_MaM,P,MM,self.filtros_txt[idx],3,13)
+					elif anl == "Ano-a-Ano":
+						for AA in (AAbar := tqdm(self.filtros, leave=False, position=3)):
+							AAbar.set_description(f"{AA}")
+							idx = self.filtros.index(AA)
+							P = f"BDD/GRÁFICOS/MUNICÍPIOS/{mi}/{self.ano} - {self.mês} [Ano-a-Ano {AA}].png"
+							if not os.path.isfile(P) or RG:
+								M_AaA = self.CALC_ANO_ANO(M)
+								self.GFG_AA_Filtro(M_AaA,P,AA,self.filtros_txt[idx],3,13)
 
 if __name__ == "__main__":
 	os.system("cls" if os.name == "nt" else "clear")

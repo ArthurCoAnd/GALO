@@ -187,6 +187,7 @@ class ARENA_MRV():
 		Título("ARENA MRV")
 
 		self.ATLETICANOS = PD.read_csv("BDD/ATLETICANOS.csv",sep=";")
+		self.ATLETICANOS = PD.read_csv("BDD/ATLETICANOS-TESTE.csv",sep=";")
 
 		self.POP = PD.read_csv("BDD/IBGE/POPULAÇÃO.csv",sep=",")
 
@@ -272,10 +273,13 @@ class ARENA_MRV():
 		for ai in (abar := tqdm(agentes, leave=False, position=2)):
 			abar.set_description(f"{ai}")
 
-			with open(f"BDD/ANÁLISES/AGENTES/{ai}/{self.ano} - {self.mês} [TOTAL].json") as f:
-				A_DT = json.load(f)
-			with open(f"BDD/ANÁLISES/AGENTES/{ai}/{self.ano} - {self.mês} [MÊS].json") as f:
-				A_DM = json.load(f)
+			if os.path.isfile(f"BDD/ANÁLISES/AGENTES/{ai}/{self.ano} - {self.mês} [TOTAL].json"):
+				with open(f"BDD/ANÁLISES/AGENTES/{ai}/{self.ano} - {self.mês} [TOTAL].json") as f:
+					A_DT = json.load(f)
+				with open(f"BDD/ANÁLISES/AGENTES/{ai}/{self.ano} - {self.mês} [MÊS].json") as f:
+					A_DM = json.load(f)
+			else:
+				continue
 
 			for anl in (anlbar := tqdm(["Dados","Total","Mês","Mês-a-Mês","Ano-a-Ano"], leave=False, position=3)):
 				anlbar.set_description(f"{anl}")
@@ -310,10 +314,13 @@ class ARENA_MRV():
 			ei_nome = S2N(ei)
 			ebar.set_description(f"{ei}")
 
-			with open(f"BDD/ANÁLISES/ESTADOS/{ei}/{self.ano} - {self.mês} [TOTAL].json") as f:
-				E_DT = json.load(f)
-			with open(f"BDD/ANÁLISES/ESTADOS/{ei}/{self.ano} - {self.mês} [MÊS].json") as f:
-				E_DM = json.load(f)
+			if os.path.isfile(f"BDD/ANÁLISES/ESTADOS/{ei}/{self.ano} - {self.mês} [TOTAL].json"):
+				with open(f"BDD/ANÁLISES/ESTADOS/{ei}/{self.ano} - {self.mês} [TOTAL].json") as f:
+					E_DT = json.load(f)
+				with open(f"BDD/ANÁLISES/ESTADOS/{ei}/{self.ano} - {self.mês} [MÊS].json") as f:
+					E_DM = json.load(f)
+			else:
+				continue
 
 			for anl in (anlbar := tqdm(["Dados","Total","Mês","Mês-a-Mês","Ano-a-Ano"], leave=False, position=3)):
 				anlbar.set_description(f"{anl}")
@@ -352,10 +359,13 @@ class ARENA_MRV():
 			mi_uf = M["SigUF"][M.index[0]]
 			mbar.set_description(f"{mi_nome} [{mi_uf}]")
 
-			with open(f"BDD/ANÁLISES/MUNICÍPIOS/{mi}/{self.ano} - {self.mês} [TOTAL].json") as f:
-				M_DT = json.load(f)
-			with open(f"BDD/ANÁLISES/MUNICÍPIOS/{mi}/{self.ano} - {self.mês} [MÊS].json") as f:
-				M_DM = json.load(f)
+			if os.path.isfile(f"BDD/ANÁLISES/MUNICÍPIOS/{mi}/{self.ano} - {self.mês} [TOTAL].json"):
+				with open(f"BDD/ANÁLISES/MUNICÍPIOS/{mi}/{self.ano} - {self.mês} [TOTAL].json") as f:
+					M_DT = json.load(f)
+				with open(f"BDD/ANÁLISES/MUNICÍPIOS/{mi}/{self.ano} - {self.mês} [MÊS].json") as f:
+					M_DM = json.load(f)
+			else:
+				continue
 
 			PDF.pg_FD("M",f"{mi_nome} [{mi_uf}]",f"Dados - Total",M_DT,f"Dados - {self.mês_txt} de {self.ano}",M_DM)
 

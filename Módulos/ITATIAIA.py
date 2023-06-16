@@ -94,9 +94,6 @@ def ITATIAIA():
 			else:
 				O = PD.DataFrame([[ATL_nome,ATL_email,AM]],columns=["Nome","email","AMUER"])
 				OUVINTES = PD.concat([OUVINTES,O])
-			
-			OUVINTES = OUVINTES.sort_values(by="Nome")
-			OUVINTES.to_csv("BDD/OUVINTES.csv", sep=";", index=False)
 
 			if enviar:
 				eGALO_msg = MIMEMultipart("alternative")
@@ -119,7 +116,33 @@ def ITATIAIA():
 				PDF.add_header("Content-Decomposition", "attachment", filename=nPDF)
 				eGALO_msg.attach(PDF)
 
-				server.send_message(eGALO_msg, from_addr=eGALO, to_addrs=ATL_email)
+				try:
+					server.send_message(eGALO_msg, from_addr=eGALO, to_addrs=ATL_email)
+
+				except smtplib.SMTPSenderRefused:
+					eGALO_msg = MIMEMultipart("alternative")
+					eGALO_msg["Subject"] = eGALO_assunto
+					eGALO_msg["From"] = eGALO
+					eGALO_msg["To"] = ATL_email
+
+					html = str(open("Complementos/GALO-Limite.html", "r", encoding="utf-8").read())
+					html = html.replace("*nome*",ATL_nome)
+					html = html.replace("*mês*",mês_txt)
+					html = html.replace("*ano*",str(ano))
+					htmlMT = MIMEText(html, "html", "utf-8")
+					eGALO_msg.attach(htmlMT)
+
+					try:
+						server.send_message(eGALO_msg, from_addr=eGALO, to_addrs=ATL_email)
+						
+					except:
+						continue
+
+				except:
+					continue
+				
+				OUVINTES = OUVINTES.sort_values(by="Nome")
+				OUVINTES.to_csv("BDD/OUVINTES.csv", sep=";", index=False)
 
 if __name__ == "__main__":
 	os.system("cls" if os.name == "nt" else "clear")

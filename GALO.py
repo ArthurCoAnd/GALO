@@ -19,8 +19,8 @@ import os
 from Módulos.ARENA_MRV import ARENA_MRV
 from Módulos.CIDADE_DO_GALO import CIDADE_DO_GALO
 from Módulos.GALO_NA_VEIA import GALO_NA_VEIA
-from Módulos.SEDE_DE_LOURDES import SEDE_DE_LOURDES
 from Módulos.ITATIAIA import ITATIAIA
+from Módulos.SEDE_DE_LOURDES import SEDE_DE_LOURDES
 
 def GALO():
 	try: SEDE_DE_LOURDES()

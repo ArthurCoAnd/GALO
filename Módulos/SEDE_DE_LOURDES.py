@@ -62,6 +62,7 @@ def SEDE_DE_LOURDES():
 				try:
 					print(f"Download: {url_ATL}")
 					wget.download(url_ATL, f"BDD/ELENCO/{dt_ANEEL}.csv")
+					print("")
 
 					# Tratamento dos novos dados - Substituir "," por "."
 					try:
