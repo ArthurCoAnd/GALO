@@ -41,7 +41,6 @@ def ITATIAIA():
 	Título("ITATIAIA")
 	
 	ATLETICANOS = PD.read_csv("BDD/ATLETICANOS.csv",sep=";")
-	# ATLETICANOS = PD.read_csv("BDD/ATLETICANOS-TESTE.csv",sep=";")
 
 	OUVINTES = PD.read_csv("BDD/OUVINTES.csv",sep=";")
 

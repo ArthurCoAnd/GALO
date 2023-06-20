@@ -187,7 +187,6 @@ class ARENA_MRV():
 		Título("ARENA MRV")
 
 		self.ATLETICANOS = PD.read_csv("BDD/ATLETICANOS.csv",sep=";")
-		self.ATLETICANOS = PD.read_csv("BDD/ATLETICANOS-TESTE.csv",sep=";")
 
 		self.POP = PD.read_csv("BDD/IBGE/POPULAÇÃO.csv",sep=",")
 

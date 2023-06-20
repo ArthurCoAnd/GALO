@@ -27,6 +27,7 @@ import matplotlib.pyplot as MPL
 import os
 
 # Ferramentas
+from Ferramentas.AM2A import AM2A
 from Ferramentas.Filtrar_Dados import Filtrar_Dados as FD
 from Ferramentas.LSI import LSI
 from Ferramentas.Mês import Mês
@@ -54,7 +55,7 @@ class CIDADE_DO_GALO():
 
 	def carregar_dados(self):
 		self.ATLETICANOS = PD.read_csv("BDD/ATLETICANOS.csv",sep=";")
-
+		
 		self.BID_CBF = PD.read_csv("BDD/BID_CBF.csv",sep=";")
 		self.dt_BDD = self.BID_CBF["dt_ANEEL"][0]
 
@@ -91,7 +92,7 @@ class CIDADE_DO_GALO():
 
 		self.primeira_Data = self.DADOS["DthAtualizaCadastralEmpreend"].min()
 		self.ult_Data = self.DADOS["DthAtualizaCadastralEmpreend"].max()
-		if(int(self.dt_BDD[8:]) <= 10):
+		if(int(self.dt_BDD[8:]) <= 13):
 			self.Data_lim = self.ult_Data - DT.timedelta(days=self.ult_Data.day) - relativedelta(months=+1)
 		else:
 			self.Data_lim = self.ult_Data - DT.timedelta(days=self.ult_Data.day)
@@ -298,6 +299,7 @@ class CIDADE_DO_GALO():
 		ax.set_ylabel(filtro_txt,fontsize=FS)
 		ax.yaxis.set_major_formatter(EF())
 		ax.yaxis.set_tick_params(labelsize=FS)
+		ax.xaxis.set_ticks(D_am_tot,labels=AM2A(D_am_tot))
 		ax.xaxis.set_tick_params(labelsize=8, rotation=-90)
 		# ax.bar_label(ax.containers[0], labels=[LSI(x) for x in D_acu],color=cor2,label_type="center",fontsize=FS, rotation=-90)
 		# z = NP.polyfit(D.index, D_acu, A)
