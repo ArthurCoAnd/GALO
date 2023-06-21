@@ -86,13 +86,13 @@ def SEDE_DE_LOURDES():
 							except: Título("ERRO - FALHA AO CALCULAR GERAÇÃO ESTIMADA","*",1)
 
 							# Remover dados antigos
-							# try:
-							# 	dts = REG_ATL["dt_ANEEL"].to_list()[2:-1]
-							# 	for d in dts:
-							# 		if os.path.exists(f"BDD/ANEEL/{d}.csv"):
-							# 			os.remove(f"BDD/ANEEL/{d}.csv")
-							# except:
-							# 	Título("ERRO - FALHA AO REMOVER DADOS ANTIGOS","*")
+							try:
+								dts = BID_CBF["dt_ANEEL"].to_list()[2:-1]
+								for d in dts:
+									if os.path.exists(f"BDD/ANEEL/{d}.csv"):
+										os.remove(f"BDD/ANEEL/{d}.csv")
+							except:
+								Título("ERRO - FALHA AO REMOVER DADOS ANTIGOS","*")
 						except:
 							Título("ERRO - FALHA NO REGISTRO DE NOVA ATUALIZAÇÃO","*",1)
 					except:

@@ -233,7 +233,7 @@ class CIDADE_DO_GALO():
 		ax.set_xlabel("nº de Empreendimentos",fontsize=8)
 		ax.xaxis.set_major_formatter(EF())
 		ax.xaxis.set_tick_params(labelsize=8)
-		ax.bar_label(ax.containers[0], labels=[LSI(x) for x in D["Emp"]],color=cor2,label_type="center",fontsize=8)
+		ax.bar_label(ax.containers[0],labels=[LSI(x) for x in D["Emp"]],color=cor2,label_type="center",fontsize=8)
 
 		D = DADOS.copy().sort_values(by="PotInst",ascending=False).head(n=10).sort_values(by="PotInst")
 		ax = MPL.subplot(222)
@@ -241,7 +241,7 @@ class CIDADE_DO_GALO():
 		ax.set_xlabel("Potência Instalada [W]",fontsize=8)
 		ax.xaxis.set_major_formatter(EF())
 		ax.xaxis.set_tick_params(labelsize=8)
-		ax.bar_label(ax.containers[0], labels=[LSI(x) for x in D["PotInst"]],color=cor2,label_type="center",fontsize=8)
+		ax.bar_label(ax.containers[0],labels=[LSI(x) for x in D["PotInst"]],color=cor2,label_type="center",fontsize=8)
 
 		D = DADOS.copy().sort_values(by="UC",ascending=False).head(n=10).sort_values(by="UC")
 		ax = MPL.subplot(223)
@@ -249,7 +249,7 @@ class CIDADE_DO_GALO():
 		ax.set_xlabel("Unidades Consumidoras",fontsize=8)
 		ax.xaxis.set_major_formatter(EF())
 		ax.xaxis.set_tick_params(labelsize=8)
-		ax.bar_label(ax.containers[0], labels=[LSI(x) for x in D["UC"]],color=cor2,label_type="center",fontsize=8)
+		ax.bar_label(ax.containers[0],labels=[LSI(x) for x in D["UC"]],color=cor2,label_type="center",fontsize=8)
 
 		D = DADOS.copy().sort_values(by="PotGer",ascending=False).head(n=10).sort_values(by="PotGer")
 		ax = MPL.subplot(224)
@@ -257,7 +257,7 @@ class CIDADE_DO_GALO():
 		ax.set_xlabel("Geração Estimada [kWh.ano]",fontsize=8)
 		ax.xaxis.set_major_formatter(EF())
 		ax.xaxis.set_tick_params(labelsize=8)
-		ax.bar_label(ax.containers[0], labels=[LSI(x) for x in D["PotGer"]],color=cor2,label_type="center",fontsize=8)
+		ax.bar_label(ax.containers[0],labels=[LSI(x) for x in D["PotGer"]],color=cor2,label_type="center",fontsize=8)
 
 		MPL.savefig(caminho,bbox_inches="tight",dpi=self.gráfico_dpi)
 		MPL.close()
