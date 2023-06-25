@@ -31,7 +31,7 @@ def GALO_NA_VEIA():
 
 	planilha = f"https://docs.google.com/spreadsheets/d/{CFG['planilha_id']}"
 
-	sheets = Sheets.from_files("GALO.json")
+	sheets = Sheets.from_files("BDD/GALO.json")
 	sheet = sheets.get(planilha)
 	ATLETICANOS = sheet[int(CFG['planilha_cod'])].to_frame()
 	ATLETICANOS = ATLETICANOS.sort_values(by="Nome")
