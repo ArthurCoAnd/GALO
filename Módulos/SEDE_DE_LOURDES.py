@@ -89,8 +89,8 @@ def SEDE_DE_LOURDES():
 							try:
 								dts = BID_CBF["dt_ANEEL"].to_list()[2:-1]
 								for d in dts:
-									if os.path.exists(f"BDD/ANEEL/{d}.csv"):
-										os.remove(f"BDD/ANEEL/{d}.csv")
+									if os.path.exists(f"BDD/ELENCO/{d}.csv"):
+										os.remove(f"BDD/ELENCO/{d}.csv")
 							except:
 								Título("ERRO - FALHA AO REMOVER DADOS ANTIGOS","*")
 						except:
