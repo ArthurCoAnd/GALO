@@ -66,11 +66,11 @@ def SEDE_DE_LOURDES():
 
 					# Tratamento dos novos dados - Substituir "," por "."
 					try:
-						arq = open(f"BDD/ELENCO/{dt_ANEEL}.csv","rt")
+						arq = open(f"BDD/ELENCO/{dt_ANEEL}.csv","rt",encoding="latin1")
 						dados = arq.read()
 						dados = dados.replace(",",".")
 						arq.close()
-						arq = open(f"BDD/ELENCO/{dt_ANEEL}.csv","wt")
+						arq = open(f"BDD/ELENCO/{dt_ANEEL}.csv","wt",encoding="latin1")
 						arq.write(dados)
 						arq.close()
 
@@ -81,7 +81,7 @@ def SEDE_DE_LOURDES():
 							BID_CBF = PD.concat([ATL,BID_CBF])
 							BID_CBF.to_csv("BDD/BID_CBF.csv", sep=";", index=False)
 
-                            # Calcular e adicionar a geração estimada aos dados
+							# Calcular e adicionar a geração estimada aos dados
 							try: AGEA()
 							except: Título("ERRO - FALHA AO CALCULAR GERAÇÃO ESTIMADA","*",1)
 
@@ -91,14 +91,13 @@ def SEDE_DE_LOURDES():
 								for d in dts:
 									if os.path.exists(f"BDD/ELENCO/{d}.csv"):
 										os.remove(f"BDD/ELENCO/{d}.csv")
+								Título("Banco de Dados ATUALIZADO","+",1)
 							except:
 								Título("ERRO - FALHA AO REMOVER DADOS ANTIGOS","*")
 						except:
 							Título("ERRO - FALHA NO REGISTRO DE NOVA ATUALIZAÇÃO","*",1)
 					except:
 						Título("ERRO - FALHA NO TRATAMENTO DOS NOVOS DADOS","*",1)
-						
-					Título("Banco de Dados ATUALIZADO","+",1)
 				except:
 					Título("ERRO - FALHA NO DOWNLOAD DA ATUALIZAÇÃO","*",1)
 			except:
