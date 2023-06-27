@@ -2,6 +2,7 @@ BDD/ATLETICANOS.csv
 BDD/BID_CBF.csv
 BDD/CFG.json
 BDD/GALO.json
+BDD/OUVINTES.csv
 
 *.csv
 *.ipynb
