@@ -43,7 +43,7 @@ def AGEA():
         if emp in nome_IRRA:
             idx = nome_IRRA.index(emp)
             # Pger = Pfv * Irra * Txd * tempo
-            PotGer_ANO.append(PotInst[i] * PotGer_ANO_IRRA[idx] * 0.8 * 365 / 1000)
+            PotGer_ANO.append(PotInst[i] * PotGer_ANO_IRRA[idx] * 0.75 * 365 / 1000)
         else: PotGer_ANO.append(0)
     ANEEL["PotGer_ANO"] = PotGer_ANO
     ANEEL.to_csv(arq_ANEEL,index=False,sep=";",encoding='latin-1')
