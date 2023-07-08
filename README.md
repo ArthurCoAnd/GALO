@@ -6,6 +6,8 @@
 
 GALO é GALO!
 
+<a href="./BDD/CFG.json">Trabalho de Conclusão de Curso</a>
+
 ## Dependências
 
 ### Windows
