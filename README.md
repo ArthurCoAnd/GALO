@@ -6,7 +6,7 @@
 
 GALO é GALO!
 
-<a href="./BDD/CFG.json">Trabalho de Conclusão de Curso</a>
+<a href="./Complementos/TCC.pdf">Trabalho de Conclusão de Curso</a>
 
 ## Dependências
 
