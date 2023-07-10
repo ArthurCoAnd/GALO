@@ -163,7 +163,7 @@ class GALO_PDF(FPDF):
 		self.cell(w=self.pdf_w_util, h=0, align="", txt=f"Potência Instalada: {LSI(dados_m['PotInst'])}Wp")
 
 		py += 13/2; self.set_xy(15,py); self.set_font("Univers", "B", 13)
-		self.cell(w=self.pdf_w_util, h=0, align="", txt=f"Geração Estimada: {LSI(dados_m['PotInst']*1000)}Wh.ano")
+		self.cell(w=self.pdf_w_util, h=0, align="", txt=f"Geração Estimada: {LSI(dados_m['PotGer']*1000)}Wh.ano")
 
 	def pg_TG(self,título,gráfico):
 		self.gerar_pg()
