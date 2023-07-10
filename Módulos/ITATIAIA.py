@@ -50,7 +50,7 @@ def ITATIAIA():
 	BID_CBF = PD.read_csv("BDD/BID_CBF.csv",sep=";")
 	dt_BDD = BID_CBF["dt_ANEEL"][0]
 	ult_Data = DT.datetime.strptime(dt_BDD, "%Y-%m-%d")
-	if(int(dt_BDD[8:]) <= 10):
+	if(int(dt_BDD[8:]) < 13):
 		Data_lim = ult_Data - DT.timedelta(days=ult_Data.day) - relativedelta(months=+1)
 	else:
 		Data_lim = ult_Data - DT.timedelta(days=ult_Data.day)

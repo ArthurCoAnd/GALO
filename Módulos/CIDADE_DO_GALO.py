@@ -92,7 +92,7 @@ class CIDADE_DO_GALO():
 
 		self.primeira_Data = self.DADOS["DthAtualizaCadastralEmpreend"].min()
 		self.ult_Data = self.DADOS["DthAtualizaCadastralEmpreend"].max()
-		if(int(self.dt_BDD[8:]) <= 13):
+		if(int(self.dt_BDD[8:]) < 13):
 			self.Data_lim = self.ult_Data - DT.timedelta(days=self.ult_Data.day) - relativedelta(months=+1)
 		else:
 			self.Data_lim = self.ult_Data - DT.timedelta(days=self.ult_Data.day)

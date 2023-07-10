@@ -193,7 +193,7 @@ class ARENA_MRV():
 		self.BID_CBF = PD.read_csv("BDD/BID_CBF.csv",sep=";")
 		self.dt_BDD = self.BID_CBF["dt_ANEEL"][0]
 		self.ult_Data = DT.datetime.strptime(self.dt_BDD, "%Y-%m-%d")
-		if(int(self.dt_BDD[8:]) <= 10):
+		if(int(self.dt_BDD[8:]) < 13):
 			self.Data_lim = self.ult_Data - DT.timedelta(days=self.ult_Data.day) - relativedelta(months=+1)
 		else:
 			self.Data_lim = self.ult_Data - DT.timedelta(days=self.ult_Data.day)
